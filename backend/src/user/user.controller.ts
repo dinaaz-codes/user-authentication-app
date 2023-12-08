@@ -14,6 +14,10 @@ export class UserController {
     status: 201,
     description: 'successfully created user ',
   })
+  @ApiResponse({
+    status: 409,
+    description: 'user already exists',
+  })
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     return await this.userService.create(createUserDto);
