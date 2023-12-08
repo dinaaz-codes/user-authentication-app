@@ -2,6 +2,7 @@ import { DocumentBuilder } from '@nestjs/swagger';
 
 export const API_TAGS = {
   health: 'Ping',
+  user: 'User',
 };
 
 export const SWAGGER_CONFIGS = {
@@ -17,5 +18,6 @@ export const getSwaggerConfigurations = () => {
     .setDescription(SWAGGER_CONFIGS.description)
     .setVersion(SWAGGER_CONFIGS.version)
     .addTag(API_TAGS.health)
+    .addTag(API_TAGS.user)
     .build();
 };

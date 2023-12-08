@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as Joi from 'joi';
 import { MongooseConfigs } from './config/mongoose.config';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { MongooseConfigs } from './config/mongoose.config';
       },
     }),
     HealthModule,
+    UserModule,
   ],
 })
 export class AppModule {}
