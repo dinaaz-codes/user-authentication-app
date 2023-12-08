@@ -5,12 +5,12 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { API_TAGS } from 'src/config/swagger.config';
+import { API_TAGS } from '../config/swagger.config';
+import { AccessTokenGuard } from 'src/auth/guards/auth.guard';
 
 @ApiBearerAuth('JWT-auth')
 @ApiTags(API_TAGS.greeting)
-@UseGuards(AuthGuard)
+@UseGuards(AccessTokenGuard)
 @Controller('greeting')
 export class GreetingController {
   @Get('welcome')
