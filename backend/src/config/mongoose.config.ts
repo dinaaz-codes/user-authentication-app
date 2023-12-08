@@ -9,7 +9,10 @@ export const MongooseConfigs = (
   const dbLogger = new Logger('MongooseLogger');
 
   return {
-    uri: <string>configService.get('MONGO_URL'),
+    uri:
+      <string>configService.get('APP_ENV') == 'test'
+        ? <string>configService.get('MONGO_TEST_URL')
+        : <string>configService.get('MONGO_URL'),
     retryAttempts: 5,
     connectionFactory: (connection: Connection) => {
       if (connection.readyState) {
