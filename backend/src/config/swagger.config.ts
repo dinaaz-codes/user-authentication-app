@@ -29,10 +29,21 @@ export const getSwaggerConfigurations = () => {
         scheme: 'bearer',
         bearerFormat: 'JWT',
         name: 'JWT',
-        description: 'Enter JWT token',
+        description: 'Enter Access Token',
         in: 'header',
       },
       'JWT-auth',
+    )
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter Refresh Token',
+        in: 'header',
+      },
+      'JWT-rt-auth',
     )
     .build();
 };

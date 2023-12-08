@@ -44,7 +44,10 @@ export class AllExceptionFilter implements ExceptionFilter {
       }
       responseBody = {
         statusCode: httpStatus,
-        message: exception.message,
+        message:
+          httpStatus == HttpStatus.INTERNAL_SERVER_ERROR
+            ? 'something went wrong'
+            : exception.message,
         error: exception.name,
       };
     }

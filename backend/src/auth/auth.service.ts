@@ -1,17 +1,16 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { UnauthorizedError } from 'src/common/errors/custom.error';
-import { UserService } from 'src/user/user.service';
-import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
-import { ConfigService } from '@nestjs/config';
 import {
-  ACCESS_TOKEN_EXPIRY,
-  REFRESH_TOKEN_EXPIRY,
-} from 'src/common/constants';
+  ForbiddenError,
+  UnauthorizedError,
+} from '../common/errors/custom.error';
+import { UserService } from '../user/user.service';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_EXPIRY } from '../common/constants';
 import { Tokens } from './types';
 import { SignUpRequestDto } from './dto';
 import { Types } from 'mongoose';
-
+import * as argon2 from 'argon2';
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
@@ -21,13 +20,6 @@ export class AuthService {
     private readonly configService: ConfigService,
     private jwtService: JwtService,
   ) {}
-
-  private async validatePassword(
-    hashPassword,
-    candidatePassword,
-  ): Promise<boolean> {
-    return await bcrypt.compare(candidatePassword, hashPassword);
-  }
 
   async signUp(signUpData: SignUpRequestDto): Promise<Tokens> {
     try {
@@ -54,8 +46,8 @@ export class AuthService {
         throw new UnauthorizedError('invalid user credentails');
 
       const userData = this.userService.excludeSensitiveInfo(user);
-      const payload = { sub: userData._id, email: userData.email };
 
+      const payload = { sub: userData._id, email: userData.email };
       const tokens = await this.getTokens(payload);
 
       await this.userService.updateRefreshToken(email, tokens.refreshToken);
@@ -63,6 +55,34 @@ export class AuthService {
       return tokens;
     } catch (error) {
       this.logger.error(`something went wrong in signIn`, error, [{ email }]);
+      throw error;
+    }
+  }
+
+  async refreshTokens(email: string, refreshToken: string): Promise<Tokens> {
+    try {
+      const user = await this.userService.findByEmail(email);
+
+      if (!user) throw new UnauthorizedError('invalid user credentails');
+
+      if (!user.refreshToken) throw new ForbiddenError('access denied');
+
+      const hasMatched = await argon2.verify(user.refreshToken, refreshToken);
+
+      if (!hasMatched) throw new ForbiddenError('access denied');
+
+      const payload = { sub: user.id, email: user.email };
+
+      const tokens = await this.getTokens(payload);
+
+      await this.userService.updateRefreshToken(email, tokens.refreshToken);
+
+      return tokens;
+    } catch (error) {
+      this.logger.error('something went wrong in refreshTokens', error, [
+        { email },
+      ]);
+
       throw error;
     }
   }
@@ -92,5 +112,12 @@ export class AuthService {
       this.logger.error('something went wrong in getTokens', error, [payload]);
       throw error;
     }
+  }
+
+  private async validatePassword(
+    hashPassword,
+    candidatePassword,
+  ): Promise<boolean> {
+    return await argon2.verify(hashPassword, candidatePassword);
   }
 }

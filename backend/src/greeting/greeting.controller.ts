@@ -6,7 +6,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { API_TAGS } from '../config/swagger.config';
-import { AccessTokenGuard } from 'src/auth/guards/auth.guard';
+import { AccessTokenGuard } from '../auth/guards';
 
 @ApiBearerAuth('JWT-auth')
 @ApiTags(API_TAGS.greeting)

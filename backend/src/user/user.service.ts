@@ -1,9 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './entities/user.entity';
 import { Model } from 'mongoose';
-import { ConflictError, NotFoundError } from '../common/errors/custom.error';
+import { ConflictError } from '../common/errors/custom.error';
+import { CreateUser } from './types';
+import * as argon2 from 'argon2';
 
 @Injectable()
 export class UserService {
@@ -19,26 +20,28 @@ export class UserService {
     return userWithoutPassword;
   }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserData: CreateUser) {
     try {
-      const existingUser = await this.findByEmail(createUserDto.email);
+      const existingUser = await this.findByEmail(createUserData.email);
 
       if (existingUser)
         throw new ConflictError('User already exists with the given email');
 
       const user = new this.userModel();
-      user.email = createUserDto.email;
-      user.password = createUserDto.password;
-      user.name = createUserDto.name;
+      user.email = createUserData.email;
+      user.password = createUserData.password;
+      user.name = createUserData.name;
 
       await user.save();
 
       const newUserData = this.excludeSensitiveInfo(user);
 
       return newUserData;
-    } catch (err) {
-      this.logger.error(err.message, err, [createUserDto]);
-      throw err;
+    } catch (error) {
+      this.logger.error('something went wrong in create user', error, [
+        createUserData,
+      ]);
+      throw error;
     }
   }
 
@@ -51,6 +54,8 @@ export class UserService {
     refreshToken: string,
   ): Promise<UserDocument | null> {
     try {
+      refreshToken = await argon2.hash(refreshToken);
+
       return await this.userModel.findOneAndUpdate({ email }, { refreshToken });
     } catch (error) {
       this.logger.error('something went wrong in updateRefreshToken', error, [

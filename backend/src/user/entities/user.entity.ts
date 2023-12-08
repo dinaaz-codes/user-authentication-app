@@ -1,9 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import * as bcrypt from 'bcrypt';
 import * as argon2 from 'argon2';
 import { Logger } from '@nestjs/common';
-import { SALT_ROUNDS } from 'src/common/constants';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -38,22 +36,12 @@ export const UserSchema = SchemaFactory.createForClass(User);
 UserSchema.pre<UserDocument>('save', async function (next) {
   if (this.isModified('password')) {
     try {
-      this.password = await bcrypt.hash(this.password, SALT_ROUNDS);
+      this.password = await argon2.hash(this.password);
     } catch (error) {
       logger.error('something went wrong while hashing user password', error, [
         this,
       ]);
       return next(error);
-    }
-  }
-
-  if (this.isModified('refreshToken') && this.refreshToken) {
-    try {
-      this.refreshToken = await argon2.hash(this.refreshToken);
-    } catch (error) {
-      logger.error('something went wrong while hashing refresh token', error, [
-        this,
-      ]);
     }
   }
   next();
