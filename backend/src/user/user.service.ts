@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './entities/user.entity';
 import { Model } from 'mongoose';
-import { ConflictError } from 'src/common/errors/custom.error';
+import { ConflictError } from '../common/errors/custom.error';
 
 @Injectable()
 export class UserService {
