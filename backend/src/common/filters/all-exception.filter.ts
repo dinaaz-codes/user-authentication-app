@@ -6,6 +6,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { Http2ServerRequest } from 'http2';
 
 @Catch()
 export class AllExceptionFilter implements ExceptionFilter {
@@ -31,6 +32,10 @@ export class AllExceptionFilter implements ExceptionFilter {
 
         case 'BadRequestError':
           httpStatus = HttpStatus.BAD_REQUEST;
+          break;
+
+        case 'UnauthorizedError':
+          httpStatus = HttpStatus.UNAUTHORIZED;
           break;
 
         default:

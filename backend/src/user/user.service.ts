@@ -13,7 +13,7 @@ export class UserService {
     @InjectModel(User.name) private readonly userModel: Model<User>,
   ) {}
 
-  private excludeSensitiveInfo(user: UserDocument): Partial<User> {
+  excludeSensitiveInfo(user: UserDocument): Partial<UserDocument> {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...userWithoutPassword } = user.toObject();
     return userWithoutPassword;

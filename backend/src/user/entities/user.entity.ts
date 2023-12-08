@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { SALT_ROUNDS } from '../../config/settings.config';
 import { Logger } from '@nestjs/common';
+import { SALT_ROUNDS } from 'src/common/constants';
 
 export type UserDocument = HydratedDocument<User>;
 
