@@ -2,7 +2,6 @@ import { DocumentBuilder } from '@nestjs/swagger';
 
 export const API_TAGS = {
   health: 'Ping',
-  user: 'User',
   auth: 'Authentication',
   greeting: 'Greetings',
 };
@@ -20,7 +19,6 @@ export const getSwaggerConfigurations = () => {
     .setDescription(SWAGGER_CONFIGS.description)
     .setVersion(SWAGGER_CONFIGS.version)
     .addTag(API_TAGS.health)
-    .addTag(API_TAGS.user)
     .addTag(API_TAGS.auth)
     .addTag(API_TAGS.greeting)
     .addBearerAuth(
