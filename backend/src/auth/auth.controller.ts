@@ -66,8 +66,12 @@ export class AuthController {
     description: 'successfully created user ',
   })
   @ApiResponse({
-    status: 409,
-    description: 'user already exists',
+    status: HttpStatus.FORBIDDEN,
+    description: 'access denied',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'invalid auth credentails',
   })
   @ApiOperation({
     summary: 'Get data',
