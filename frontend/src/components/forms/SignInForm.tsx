@@ -16,7 +16,6 @@ const SignInForm = () => {
     register,
     formState: { errors },
     handleSubmit,
-    watch,
   } = useForm<ISignInInput>({
     resolver: yupResolver(signInSchema),
   });
