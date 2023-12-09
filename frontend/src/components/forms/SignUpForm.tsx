@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { signUpschema } from "../schema";
+import { signUpschema } from "../../schema";
 
 interface ISignUpInput {
   name: string;
@@ -24,7 +24,7 @@ const SignUpForm = () => {
   const onSubmit: SubmitHandler<ISignUpInput> = (data) => console.log(data);
 
   return (
-    <Row className="bg-light p-5 rounded  text-left" >
+    <Row className="bg-light p-5 rounded  text-left">
       <Form onSubmit={handleSubmit(onSubmit)}>
         <h2 className="mb-4">Sign Up Here</h2>
         <hr
@@ -33,9 +33,9 @@ const SignUpForm = () => {
         />
 
         <Form.Group className="mb-3">
+          <Form.Label style={{ color: "grey" }}>Name</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter Name"
             {...register("name")}
             isInvalid={!!errors.name}
           />
@@ -44,9 +44,9 @@ const SignUpForm = () => {
           </Form.Control.Feedback>
         </Form.Group>
         <Form.Group className="mb-3">
+          <Form.Label style={{ color: "grey" }}>Email</Form.Label>
           <Form.Control
             type="email"
-            placeholder="Enter Email"
             {...register("email")}
             isInvalid={!!errors.email}
           />
@@ -56,9 +56,9 @@ const SignUpForm = () => {
         </Form.Group>
 
         <Form.Group className="mb-3">
+          <Form.Label style={{ color: "grey" }}>Password</Form.Label>
           <Form.Control
             type="password"
-            placeholder="Enter Password"
             {...register("password")}
             isInvalid={!!errors.password}
           />
@@ -67,9 +67,9 @@ const SignUpForm = () => {
           </Form.Control.Feedback>
         </Form.Group>
         <Form.Group className="mb-3">
+          <Form.Label style={{ color: "grey" }}>Confirm Password</Form.Label>
           <Form.Control
             type="password"
-            placeholder="Confirm Password"
             {...register("confirmPassword")}
             isInvalid={!!errors.confirmPassword}
           />

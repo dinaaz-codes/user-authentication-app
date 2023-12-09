@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { signInSchema } from "../schema";
+import { signInSchema } from "../../schema";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
@@ -32,9 +32,9 @@ const SignInForm = () => {
         />
 
         <Form.Group className="mb-3">
+          <Form.Label style={{ color: "grey" }}>Email</Form.Label>
           <Form.Control
             type="email"
-            placeholder="Enter Email"
             {...register("email")}
             isInvalid={!!errors.email}
           />
@@ -44,9 +44,9 @@ const SignInForm = () => {
         </Form.Group>
 
         <Form.Group className="mb-3">
+          <Form.Label style={{ color: "grey" }}>Password</Form.Label>
           <Form.Control
             type="password"
-            placeholder="Enter Password"
             {...register("password")}
             isInvalid={!!errors.password}
           />
