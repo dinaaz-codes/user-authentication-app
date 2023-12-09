@@ -49,14 +49,17 @@ export class UserService {
     return await this.userModel.findOne({ email: email });
   }
 
-  async updateRefreshToken(
-    email: string,
-    refreshToken: string,
-  ): Promise<UserDocument | null> {
+  async updateRefreshToken(email: string, refreshToken: string | undefined) {
     try {
-      refreshToken = await argon2.hash(refreshToken);
+      if (!refreshToken) {
+        return await this.userModel.updateOne(
+          { email },
+          { $set: { refreshToken: null } },
+        );
+      }
 
-      return await this.userModel.findOneAndUpdate({ email }, { refreshToken });
+      refreshToken = await argon2.hash(refreshToken);
+      return await this.userModel.updateOne({ email }, { refreshToken });
     } catch (error) {
       this.logger.error('something went wrong in updateRefreshToken', error, [
         { email },

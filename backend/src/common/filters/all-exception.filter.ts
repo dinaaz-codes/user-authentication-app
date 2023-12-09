@@ -37,6 +37,9 @@ export class AllExceptionFilter implements ExceptionFilter {
         case 'UnauthorizedError':
           httpStatus = HttpStatus.UNAUTHORIZED;
           break;
+        case 'ForbiddenError':
+          httpStatus = HttpStatus.FORBIDDEN;
+          break;
 
         default:
           httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;

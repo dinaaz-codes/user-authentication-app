@@ -87,6 +87,22 @@ export class AuthService {
     }
   }
 
+  async signOut(email: string): Promise<void> {
+    try {
+      const user = await this.userService.findByEmail(email);
+
+      if (!user) throw new UnauthorizedError('invalid user credentails');
+
+      await this.userService.updateRefreshToken(email, undefined);
+
+      return;
+    } catch (error) {
+      this.logger.error('something went wrong in signOut', error, [{ email }]);
+
+      throw error;
+    }
+  }
+
   private async getTokens(payload: {
     sub: Types.ObjectId;
     email: string;

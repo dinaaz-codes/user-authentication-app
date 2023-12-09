@@ -1,4 +1,11 @@
-import { Body, Controller, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInRequestDto } from './dto/sign-in-request.dto';
 import {
@@ -12,13 +19,15 @@ import { API_TAGS } from '../config/swagger.config';
 import { SignUpRequestDto } from './dto';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { RefreshTokenGuard } from './guards/refresh-token.guard';
-import { JwtRtPayload } from './types';
+import { JwtPayload, JwtRtPayload } from './types';
+import { Public } from 'src/common/decorators';
 
 @ApiTags(API_TAGS.auth)
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Public()
   @Post('sign-up')
   @ApiBody({ type: SignUpRequestDto })
   @ApiResponse({
@@ -33,7 +42,9 @@ export class AuthController {
     return this.authService.signUp(signUpData);
   }
 
+  @Public()
   @Post('sign-in')
+  @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'user sign in successful',
@@ -47,6 +58,7 @@ export class AuthController {
     return this.authService.signIn(signInData.email, signInData.password);
   }
 
+  @Public()
   @UseGuards(RefreshTokenGuard)
   @Post('refresh-token')
   @ApiResponse({
@@ -68,5 +80,24 @@ export class AuthController {
       currentUser.email,
       currentUser.refreshToken,
     );
+  }
+
+  @Post('sign-out')
+  @HttpCode(HttpStatus.OK)
+  @ApiBearerAuth('JWT-auth')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'successfully logged user out ',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'invalid user credentails',
+  })
+  @ApiOperation({
+    summary: 'Get data',
+    description: 'Retrieve data with Bearer token',
+  })
+  async signOut(@CurrentUser() currentUser: JwtPayload) {
+    return this.authService.signOut(currentUser.email);
   }
 }
