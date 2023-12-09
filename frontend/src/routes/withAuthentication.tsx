@@ -5,7 +5,7 @@ export const withAuthentication = (
   Component: React.ReactNode
 ): React.ReactNode => {
   return (() => {
-    const isLoggedIn = false;
+    const isLoggedIn = true;
 
     if (isLoggedIn) return Component;
     return (

@@ -4,6 +4,7 @@ import Row from "react-bootstrap/Row";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signUpschema } from "../../schema";
+import { NavLink } from "react-router-dom";
 
 interface ISignUpInput {
   name: string;
@@ -84,6 +85,12 @@ const SignUpForm = () => {
           >
             Sign Up
           </Button>
+        </div>
+
+        <div className="mt-3">
+          <p className="text-muted">
+            Already registered? <NavLink to="/">Sign In here</NavLink>
+          </p>
         </div>
       </Form>
     </Row>
