@@ -1,48 +1,36 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { yupResolver } from "@hookform/resolvers/yup";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { signInSchema } from "../schema";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { signUpschema } from "../schema";
 
-interface ISignUpInput {
-  name: string;
+type ISignInInput = {
   email: string;
   password: string;
-  confirmPassword: string;
-}
+};
 
-const SignUpForm = () => {
+const SignInForm = () => {
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm<ISignUpInput>({
-    resolver: yupResolver(signUpschema),
+    watch,
+  } = useForm<ISignInInput>({
+    resolver: yupResolver(signInSchema),
   });
-
-  const onSubmit: SubmitHandler<ISignUpInput> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<ISignInInput> = (data) => console.log(data);
 
   return (
-    <Row className="bg-light p-5 rounded  text-left" >
+    <Row className="bg-light p-5 rounded  text-left">
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <h2 className="mb-4">Sign Up Here</h2>
+        <h2 className="mb-4">Log In Here</h2>
         <hr
           className="mb-4"
           style={{ borderTop: "10px solid #F0754C", width: "20%" }}
         />
 
-        <Form.Group className="mb-3">
-          <Form.Control
-            type="text"
-            placeholder="Enter Name"
-            {...register("name")}
-            isInvalid={!!errors.name}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.name && errors.name.message}
-          </Form.Control.Feedback>
-        </Form.Group>
         <Form.Group className="mb-3">
           <Form.Control
             type="email"
@@ -66,23 +54,13 @@ const SignUpForm = () => {
             {errors.password && errors.password.message}
           </Form.Control.Feedback>
         </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Control
-            type="password"
-            placeholder="Confirm Password"
-            {...register("confirmPassword")}
-            isInvalid={!!errors.confirmPassword}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.confirmPassword && errors.confirmPassword.message}
-          </Form.Control.Feedback>
-        </Form.Group>
+
         <div className="d-grid gap-2">
           <Button
             style={{ background: "#F0754C", border: "#F0754C" }}
             type="submit"
           >
-            Sign Up
+            Sign In
           </Button>
         </div>
       </Form>
@@ -90,4 +68,4 @@ const SignUpForm = () => {
   );
 };
 
-export default SignUpForm;
+export default SignInForm;
