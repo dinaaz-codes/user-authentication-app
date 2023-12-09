@@ -29,6 +29,11 @@ export class AuthService {
 
       const tokens = await this.getTokens(payload);
 
+      await this.userService.updateRefreshToken(
+        user.email,
+        tokens.refreshToken,
+      );
+
       return tokens;
     } catch (error) {
       this.logger.error(`something went wrong in signUp`, error, [
@@ -68,7 +73,6 @@ export class AuthService {
       if (!user.refreshToken) throw new ForbiddenError('access denied');
 
       const hasMatched = await argon2.verify(user.refreshToken, refreshToken);
-
       if (!hasMatched) throw new ForbiddenError('access denied');
 
       const payload = { sub: user.id, email: user.email };

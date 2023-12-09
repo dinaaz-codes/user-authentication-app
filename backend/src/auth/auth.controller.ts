@@ -78,7 +78,6 @@ export class AuthController {
     description: 'Retrieve data with Bearer token',
   })
   @ApiBearerAuth('JWT-rt-auth')
-  @UseGuards(RefreshTokenGuard)
   async refreshTokens(@CurrentUser() currentUser: JwtRtPayload) {
     return this.authService.refreshTokens(
       currentUser.email,
