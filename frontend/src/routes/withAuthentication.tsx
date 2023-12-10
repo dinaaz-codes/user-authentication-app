@@ -1,18 +1,23 @@
 import React from "react";
-import ErrorPage, { ErrorType, HttpStatusCode } from "../shared/ErrorPage";
+import useAuth from "../hooks/useAuth";
+import { Navigate, useLocation } from "react-router";
 
-export const withAuthentication = (
-  Component: React.ReactNode
-): React.ReactNode => {
-  return (() => {
-    const isLoggedIn = true;
+interface WithAuthenticationProps {
+  children: React.ReactNode;
+}
 
-    if (isLoggedIn) return Component;
-    return (
-      <ErrorPage
-        statusCode={HttpStatusCode.FORBIDDEN}
-        errorType={ErrorType.FORBIDDEN}
-      ></ErrorPage>
-    );
-  })();
+const WithAuthentication: React.FC<WithAuthenticationProps> = ({
+  children,
+}) => {
+  const { auth } = useAuth();
+  const location = useLocation();
+
+  if (auth.accessToken) {
+    console.log('duhh')
+    return <>{children}</>;
+  }
+
+  return <Navigate to="/" state={{ from: location }} replace />;
 };
+
+export default WithAuthentication;

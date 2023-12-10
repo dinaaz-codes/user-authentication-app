@@ -18,11 +18,15 @@ const SignUpForm = () => {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm<ISignUpInput>({
     resolver: yupResolver(signUpschema),
   });
 
-  const onSubmit: SubmitHandler<ISignUpInput> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<ISignUpInput> = (data) => {
+    console.log(data);
+    reset();
+  };
 
   return (
     <Row className="bg-light p-5 rounded  text-left">
