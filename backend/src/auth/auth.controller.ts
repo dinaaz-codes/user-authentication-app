@@ -4,6 +4,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -11,6 +12,7 @@ import { SignInRequestDto } from './dto/sign-in-request.dto';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiCookieAuth,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -19,8 +21,9 @@ import { API_TAGS } from '../config/swagger.config';
 import { SignUpRequestDto } from './dto';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { RefreshTokenGuard } from './guards/refresh-token.guard';
-import { JwtPayload, JwtRtPayload } from './types';
+import { JwtPayload, JwtRtPayload, TokenResponse } from './types';
 import { Public } from 'src/common/decorators';
+import { Response } from 'express';
 
 @ApiTags(API_TAGS.auth)
 @Controller('auth')
@@ -38,8 +41,23 @@ export class AuthController {
     status: HttpStatus.CONFLICT,
     description: 'user already exists',
   })
-  async signUp(@Body() signUpData: SignUpRequestDto) {
-    return this.authService.signUp(signUpData);
+  async signUp(
+    @Res({ passthrough: true }) response: Response,
+    @Body() signUpData: SignUpRequestDto,
+  ): Promise<TokenResponse> {
+    const tokens = await this.authService.signUp(signUpData);
+    const expires = new Date();
+
+    expires.setDate(expires.getDate() + 7);
+
+    response.cookie('refresh_token', tokens.refreshToken, {
+      httpOnly: true,
+      expires,
+    });
+
+    return {
+      accessToken: tokens.accessToken,
+    };
   }
 
   @Public()
@@ -54,8 +72,25 @@ export class AuthController {
     description: 'invalid user credentails',
   })
   @ApiBody({ type: SignInRequestDto })
-  async signIn(@Body() signInData: SignInRequestDto) {
-    return this.authService.signIn(signInData.email, signInData.password);
+  async signIn(
+    @Res({ passthrough: true }) response: Response,
+    @Body() signInData: SignInRequestDto,
+  ): Promise<TokenResponse> {
+    const tokens = await this.authService.signIn(
+      signInData.email,
+      signInData.password,
+    );
+    const expires = new Date();
+    expires.setDate(expires.getDate() + 7);
+
+    response.cookie('refresh_token', tokens.refreshToken, {
+      httpOnly: true,
+      expires,
+    });
+
+    return {
+      accessToken: tokens.accessToken,
+    };
   }
 
   @Public()
@@ -77,12 +112,27 @@ export class AuthController {
     summary: 'Get data',
     description: 'Retrieve data with Bearer token',
   })
-  @ApiBearerAuth('JWT-rt-auth')
-  async refreshTokens(@CurrentUser() currentUser: JwtRtPayload) {
-    return this.authService.refreshTokens(
+  @ApiCookieAuth('in-app-cookie-refresh_token')
+  async refreshTokens(
+    @Res({ passthrough: true }) response: Response,
+    @CurrentUser() currentUser: JwtRtPayload,
+  ): Promise<TokenResponse> {
+    const tokens = await this.authService.refreshTokens(
       currentUser.email,
       currentUser.refreshToken,
     );
+
+    const expires = new Date();
+    expires.setDate(expires.getDate() + 7);
+
+    response.cookie('refresh_token', tokens.refreshToken, {
+      httpOnly: true,
+      expires,
+    });
+
+    return {
+      accessToken: tokens.accessToken,
+    };
   }
 
   @Post('sign-out')
@@ -100,7 +150,12 @@ export class AuthController {
     summary: 'Get data',
     description: 'Retrieve data with Bearer token',
   })
-  async signOut(@CurrentUser() currentUser: JwtPayload) {
-    return this.authService.signOut(currentUser.email);
+  async signOut(
+    @Res({ passthrough: true }) response: Response,
+    @CurrentUser() currentUser: JwtPayload,
+  ) {
+    this.authService.signOut(currentUser.email);
+    response.clearCookie('refresh_token', { httpOnly: true });
+    return;
   }
 }

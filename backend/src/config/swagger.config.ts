@@ -32,16 +32,14 @@ export const getSwaggerConfigurations = () => {
       },
       'JWT-auth',
     )
-    .addBearerAuth(
+    .addCookieAuth(
+      'authCookie',
       {
         type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-        name: 'JWT',
-        description: 'Enter Refresh Token',
-        in: 'header',
+        in: 'Header',
+        scheme: 'Bearer',
       },
-      'JWT-rt-auth',
+      'in-app-cookie-refresh_token',
     )
     .build();
 };
