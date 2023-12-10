@@ -8,27 +8,10 @@
 
 ## Backend
 
-### Run
-```bash
-cd backend
-npm install
-npm run build
-npm run start:prod
-```
-
 ### Open API (Swagger Docs)
 PORT depends on the one configured in env file
 ```bash
 http://localhost:4000/api 
-```
-
-## Frontend
-
-### Run
-```bash
-cd frontend
-npm install
-npm run dev
 ```
 
 
