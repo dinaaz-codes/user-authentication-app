@@ -2,7 +2,9 @@ import { Controller, Get } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { API_TAGS } from '../config/swagger.config';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import { Public } from '../common/decorators';
 
+@Public()
 @ApiTags(API_TAGS.health)
 @Controller('health')
 export class HealthController {
