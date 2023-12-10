@@ -7,15 +7,26 @@
 3. MongoDB
 4. Swagger
 
-### Run Backend
+## Backend
+
+### Run
 ```bash
 cd backend
+npm install
 npm run start
 ```
 
-### Run Frontend
+### Open API (Swagger Docs)
+```bash
+http://localhost:4000/api
+```
+
+## Frontend
+
+### Run
 ```bash
 cd frontend
+npm install
 npm run start
 ```
 
