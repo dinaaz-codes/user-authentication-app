@@ -17,8 +17,9 @@ npm run start
 ```
 
 ### Open API (Swagger Docs)
+PORT depends on the one configured in env file
 ```bash
-http://localhost:4000/api
+http://localhost:4000/api 
 ```
 
 ## Frontend
