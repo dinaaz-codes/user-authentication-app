@@ -28,7 +28,7 @@ http://localhost:4000/api
 ```bash
 cd frontend
 npm install
-npm run start
+npm run dev
 ```
 
 
