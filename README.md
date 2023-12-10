@@ -1,4 +1,4 @@
-# User Authentication Fullstack
+# User Authentication
 
 
 ### Techstack
