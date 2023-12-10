@@ -16,7 +16,7 @@ export class UserService {
 
   excludeSensitiveInfo(user: UserDocument) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...userWithoutPassword } = user.toObject();
+    const { password, refreshToken, ...userWithoutPassword } = user.toObject();
     return userWithoutPassword;
   }
 
@@ -59,7 +59,7 @@ export class UserService {
       }
 
       refreshToken = await argon2.hash(refreshToken);
-      return await this.userModel.updateOne({ email }, { refreshToken });
+      await this.userModel.updateOne({ email }, { refreshToken });
     } catch (error) {
       this.logger.error('something went wrong in updateRefreshToken', error, [
         { email },

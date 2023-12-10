@@ -15,8 +15,8 @@ import {
   UnauthorizedError,
 } from '../../common/errors/custom.error';
 import { signUpDataStub } from './stubs/signUpData.stub';
-import { jwtRtPayloadStub } from './stubs/jwtRtPayloadStub';
-import { jwtPayloadStub } from './stubs/jwtPayloadStub';
+import { jwtRtPayloadStub } from './stubs/jwtRtPayload.stub';
+import { jwtPayloadStub } from './stubs/jwtPayload.stub';
 
 jest.mock('../auth.service');
 describe('AuthController', () => {

@@ -1,4 +1,4 @@
-import { JwtPayload } from './../../types';
+import { JwtPayload } from '../../types';
 
 export const jwtPayloadStub = (): JwtPayload => {
   return {
