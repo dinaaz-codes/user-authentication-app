@@ -20,6 +20,7 @@ import { AccessTokenGuard } from './auth/guards';
         MONGO_TEST_URL: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
         JWT_RT_SECRET: Joi.string().required(),
+        FRONTEND_URL: Joi.string().optional(),
       }),
       isGlobal: true,
     }),
