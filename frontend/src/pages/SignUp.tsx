@@ -41,7 +41,6 @@ const SignUp = () => {
       );
 
       const accessToken = response?.data?.accessToken;
-      console.log(accessToken);
       setAuth({ accessToken });
 
       navigate("/dashboard", { replace: true });

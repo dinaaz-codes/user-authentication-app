@@ -8,7 +8,6 @@ export const corsConfigs = (): CorsOptions => {
     APP_ENV == 'production' || <string>FRONTEND_URL
       ? FRONTEND_URL
       : 'http://localhost:5173';
-  console.log(origin);
   return {
     origin: origin,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',

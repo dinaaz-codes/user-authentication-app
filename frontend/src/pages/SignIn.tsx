@@ -6,11 +6,11 @@ import SignInForm, {
 import useAuth from "../hooks/useAuth";
 import axios, { apiEndpoints } from "../api/axios";
 import { useLocation, useNavigate } from "react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CustomToast from "../components/CustomToast";
 
 const SignIn = () => {
-  const { auth, setAuth } = useAuth();
+  const { setAuth } = useAuth();
 
   const [toastMessage, setToastMessage] = useState<string>();
   const [isError, setIsError] = useState<boolean>(false);
@@ -65,11 +65,6 @@ const SignIn = () => {
   const signInFormProps: SignInFormProps = {
     onSignIn: handleSignIn,
   };
-
-  useEffect(() => {
-
-    console.log(auth.accessToken);
-  }, []);
 
   return (
     <MainLayout>
