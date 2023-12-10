@@ -22,7 +22,7 @@ import { SignUpRequestDto } from './dto';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { RefreshTokenGuard } from './guards/refresh-token.guard';
 import { JwtPayload, JwtRtPayload, TokenResponse } from './types';
-import { Public } from 'src/common/decorators';
+import { Public } from '../common/decorators';
 import { Response } from 'express';
 
 @ApiTags(API_TAGS.auth)

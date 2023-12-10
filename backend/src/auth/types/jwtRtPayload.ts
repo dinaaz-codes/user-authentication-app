@@ -1,5 +1,5 @@
 export type JwtRtPayload = {
   email: string;
-  sub: number;
+  sub: string;
   refreshToken: string;
 };
