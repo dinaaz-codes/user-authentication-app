@@ -13,7 +13,6 @@ const WithAuthentication: React.FC<WithAuthenticationProps> = ({
   const location = useLocation();
 
   if (auth.accessToken) {
-    console.log('duhh')
     return <>{children}</>;
   }
 

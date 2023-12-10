@@ -6,11 +6,11 @@ import SignInForm, {
 import useAuth from "../hooks/useAuth";
 import axios, { apiEndpoints } from "../api/axios";
 import { useLocation, useNavigate } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomToast from "../components/CustomToast";
 
 const SignIn = () => {
-  const { setAuth } = useAuth();
+  const { auth, setAuth } = useAuth();
 
   const [toastMessage, setToastMessage] = useState<string>();
   const [isError, setIsError] = useState<boolean>(false);
@@ -38,17 +38,15 @@ const SignIn = () => {
       );
 
       const accessToken = response?.data?.accessToken;
-      console.log(accessToken);
       setAuth({ accessToken });
-      // Check if 'from' is '/'
       if (from === "/") {
-        // Redirect to '/dashboard' instead
         navigate("/dashboard", { replace: true });
       } else {
-        // Otherwise, use the 'from' location
         navigate(from, { replace: true });
       }
-    } catch (error) {
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       console.log(error);
       setIsError(true);
       showToast();
@@ -67,6 +65,11 @@ const SignIn = () => {
   const signInFormProps: SignInFormProps = {
     onSignIn: handleSignIn,
   };
+
+  useEffect(() => {
+
+    console.log(auth.accessToken);
+  }, []);
 
   return (
     <MainLayout>

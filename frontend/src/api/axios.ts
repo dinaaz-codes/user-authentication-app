@@ -5,6 +5,7 @@ export const apiEndpoints = {
   auth: {
     signUp: `/auth/sign-up`,
     signIn: `/auth/sign-in`,
+    signOut: `/auth/sign-out`,
     refreshToken: `/auth/refresh-token`,
   },
   dashboard: {

@@ -1,4 +1,3 @@
-import React from "react";
 import { Toast, ToastContainer } from "react-bootstrap";
 
 type CustomToastProps = {
