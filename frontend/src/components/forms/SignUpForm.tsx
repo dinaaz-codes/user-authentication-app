@@ -6,23 +6,30 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { signUpschema } from "../../schema";
 import { NavLink } from "react-router-dom";
 
-interface ISignUpInput {
+export interface ISignUpInput {
   name: string;
   email: string;
   password: string;
   confirmPassword: string;
 }
+export interface SignUpFormProps {
+  onSignUp: (data: ISignUpInput) => Promise<void>;
+}
 
-const SignUpForm = () => {
+const SignUpForm: React.FC<SignUpFormProps> = ({ onSignUp }) => {
   const {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm<ISignUpInput>({
     resolver: yupResolver(signUpschema),
   });
 
-  const onSubmit: SubmitHandler<ISignUpInput> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<ISignUpInput> = (data) => {
+    reset();
+    onSignUp(data);
+  };
 
   return (
     <Row className="bg-light p-5 rounded  text-left">

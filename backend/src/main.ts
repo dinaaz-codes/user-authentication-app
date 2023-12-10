@@ -5,15 +5,18 @@ import { getSwaggerConfigurations } from './config/swagger.config';
 import { ValidationPipe } from '@nestjs/common';
 import { AllExceptionFilter } from './common/filters/all-exception.filter';
 import * as cookieParser from 'cookie-parser';
+import { corsConfigs } from './config/cors.config';
 
-const port = process.env.PORT;
+const PORT = process.env.PORT;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('/api/v1');
+  app.setGlobalPrefix('/api');
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
   app.useGlobalFilters(new AllExceptionFilter());
+
+  app.enableCors(corsConfigs());
 
   const document = SwaggerModule.createDocument(
     app,
@@ -21,6 +24,6 @@ async function bootstrap() {
   );
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(port);
+  await app.listen(PORT);
 }
 bootstrap();

@@ -17,18 +17,18 @@ describe('AppController (e2e)', () => {
       .compile();
 
     app = moduleFixture.createNestApplication();
-    app.setGlobalPrefix('/api/v1');
+    app.setGlobalPrefix('/api');
     await app.init();
   });
 
   describe('Health', () => {
-    it('/api/v1/health (GET)', () => {
+    it('/api/health (GET)', () => {
       const expectedResponse = {
         status: 'ok',
         message: 'app running on 4000 port.',
       };
       return request(app.getHttpServer())
-        .get('/api/v1/health')
+        .get('/api/health')
         .expect(200)
         .expect(expectedResponse);
     });
