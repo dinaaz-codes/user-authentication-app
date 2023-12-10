@@ -1,4 +1,4 @@
-# Easy Generator Task App
+# User Authentication Fullstack
 
 
 ### Techstack
