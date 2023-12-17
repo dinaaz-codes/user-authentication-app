@@ -5,4 +5,5 @@ export const AuthService = jest.fn().mockReturnValue({
   signIn: jest.fn().mockResolvedValue(tokenStub()),
   refreshTokens: jest.fn().mockResolvedValue(tokenStub()),
   signOut: jest.fn().mockResolvedValue(undefined),
+  getTokens: jest.fn(),
 });
