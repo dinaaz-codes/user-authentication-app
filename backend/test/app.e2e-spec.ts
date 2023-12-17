@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { ConfigService } from '@nestjs/config';
-import { MockConfigService } from './mocks/config.service.mock';
+import { MockConfigService } from './__mocks__/config.service.mock';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
