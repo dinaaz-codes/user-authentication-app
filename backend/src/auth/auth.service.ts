@@ -107,7 +107,7 @@ export class AuthService {
     }
   }
 
-  private async getTokens(payload: {
+  async getTokens(payload: {
     sub: Types.ObjectId;
     email: string;
   }): Promise<Tokens> {
@@ -134,10 +134,7 @@ export class AuthService {
     }
   }
 
-  private async validatePassword(
-    hashPassword,
-    candidatePassword,
-  ): Promise<boolean> {
+  async validatePassword(hashPassword, candidatePassword): Promise<boolean> {
     return await argon2.verify(hashPassword, candidatePassword);
   }
 }

@@ -1,3 +1,3 @@
 export const signInDataStub = () => {
-  return { email: 'din@mailinator.com', password: 'p@ssw0rd' };
+  return { email: 'test@example.com', password: 'p@ssw0rd' };
 };
